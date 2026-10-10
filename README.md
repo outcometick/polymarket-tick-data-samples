@@ -21,11 +21,11 @@ engine — no key needed.
 [/backtest](https://outcometick.com/zh/backtest) 的托管沙箱里跑归档数据，不用先下载。
 **免费：** 下面的样例日，加上 `ot run` 本地重放，同一个引擎，不需要 key。
 
-> Also available: **[Predict.fun data](https://github.com/Ligengxin96/predict.fun-data-samples)**
+> Also available: **[Predict.fun data](https://github.com/outcometick/predict.fun-data-samples)**
 > — the prediction-market venue behind the Binance Wallet front end, collected
 > and sold separately (different venue, different settlement source).
 >
-> 另有 **[Predict.fun 数据](https://github.com/Ligengxin96/predict.fun-data-samples)**
+> 另有 **[Predict.fun 数据](https://github.com/outcometick/predict.fun-data-samples)**
 > （币安钱包前端接入的预测市场），独立采集、独立出售。
 
 ## What the full dataset contains / 完整数据集内容
@@ -89,7 +89,7 @@ price lines themselves are described under
 
 ## Samples / 样例
 
-**[Download the sample bundle](https://github.com/Ligengxin96/polymarket-data-samples/releases/latest/download/polymarket-data-samples.tar.gz)**
+**[Download the sample bundle](https://github.com/outcometick/polymarket-tick-data-samples/releases/latest/download/polymarket-data-samples.tar.gz)**
 — one real, unmodified UTC day (**2026-09-08**) of the BTC 5-minute series plus all
 three BTC settlement price lines.
 
@@ -113,7 +113,7 @@ The same sample day, together with the Predict.fun one, is also on
 > 这是有意的：残缺的归档跑起来不报错却会给出错误结果，所以要么给完整一天，要么不给。
 
 ```bash
-curl -L https://github.com/Ligengxin96/polymarket-data-samples/releases/latest/download/polymarket-data-samples.tar.gz | tar xz
+curl -L https://github.com/outcometick/polymarket-tick-data-samples/releases/latest/download/polymarket-data-samples.tar.gz | tar xz
 ```
 
 It unpacks to `polymarket-data-samples/`, laid out exactly like the paid
@@ -227,15 +227,40 @@ one matches Polymarket.
 只有两端都持有精确边界秒报价，我们才称其可复现——邻近 tick 并不能证明边界究竟落在
 哪一侧，因此这类市场记为未判定而非算作一致。而这 253 个全部对得上。
 
+### Run the audit's own code / 用审计自己的代码跑一遍
+
+The `verify/` folder holds the code that produces outcometick.com's public
+settlement audit — the same files, copied verbatim. It settles every market this
+sample can settle on its own, compares each verdict with the audit published for
+that day, and with `--official` asks Polymarket's own API for a sample of the
+outcomes. Node 18+, no dependencies.
+
+`verify/` 目录里就是生成 outcometick.com 公开结算审计的代码（原样复制）。它把本样例
+能独立判定的每个市场重算一遍，逐个与当天公开的审计结论比对；加 `--official` 时再抽样
+向 Polymarket 自己的接口核对官方结果。需要 Node 18+，无依赖。
+
+```bash
+git clone https://github.com/outcometick/polymarket-tick-data-samples
+curl -L https://github.com/outcometick/polymarket-tick-data-samples/releases/latest/download/polymarket-data-samples.tar.gz | tar xz
+node polymarket-tick-data-samples/verify/verify-settlement.mjs --data ./polymarket-data-samples --official 30
+```
+
+The published audit: https://outcometick.com/polymarket-settlement-audit
+
 ## Gaps in the feed / 断档
 
-Feed density is a property of the upstream publisher, not something a collector
-can invent, and the feed does have gaps. Every price row carries its own
-timestamps, so you can locate and size them straight from the files before you
-backtest, rather than take a completeness claim on trust.
+The feed does have gaps. The archive records the Chainlink reports as Polymarket's
+public real-time feed relays them, while the official outcome is resolved from
+Chainlink Data Streams directly — so a pause in that relay can leave the venue
+with a report the archive lacks. A missing second can also come from a capture
+loss; the files do not tell these apart. Every price row carries its own
+timestamps, so you can locate and size the gaps straight from the files before
+you backtest, rather than take a completeness claim on trust.
 
-feed 密度属上游发布方特性，采集端无法凭空补出，feed 确实存在断档。每条价格行都带
-自己的时间戳，回测前可直接从文件里定位并评估断档，不必对完整性声明照单全收。
+feed 确实存在断档。归档记录的是 Polymarket 公开实时通道转发的 Chainlink 报价，而官方
+结果直接按 Chainlink Data Streams 判定——通道暂停时，官方仍有那一秒的报价，归档里
+没有；缺的那一秒也可能来自采集丢失，文件本身分辨不出是哪一种。每条价格行都带自己的
+时间戳，回测前可直接从文件里定位并评估断档，不必对完整性声明照单全收。
 
 ## Buy / 购买
 
