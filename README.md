@@ -60,8 +60,11 @@ for that token replaces the whole ladder. To rebuild: start each token from its
 latest `book` line, apply `price_change` items on top, then drop any bid above
 or ask below the newest best bid/ask — from `best_bid_ask` (unthrottled) where
 the day has it, otherwise from the `best_bid`/`best_ask` on the `price_change`
-item itself. That keeps the top of the ladder right; deeper levels can stay
-stale until the next snapshot, because `best_bid_ask` has prices only, no sizes.
+item itself. That removes every level the best prices have moved past, but it
+cannot restore what the dropped frames added or resized: until the next
+snapshot a level, at the top too, can be missing or carry an old size, because
+`best_bid_ask` has prices only, no sizes. For the latest best bid/ask
+themselves, read `best_bid_ask`.
 Field-by-field schema: [docs/schemas](https://outcometick.com/docs/schemas).
 
 `book` 与 `price_change` 按上表的频率保留，两次被保留的帧之间到达的帧不在归档里。
@@ -70,8 +73,10 @@ Field-by-field schema: [docs/schemas](https://outcometick.com/docs/schemas).
 `book` 整体替换它。重建方法：每个 token 从最近一行 `book` 开始，应用 `price_change`，
 再删掉高于最新最优买价的买档、低于最新最优卖价的卖档——最优价取自不限流的
 `best_bid_ask`（当天有这条流时），否则取 `price_change` 那一项自带的
-`best_bid`/`best_ask`。这样盘口顶部是对的；更深的档位在下一次快照前仍可能是旧的，
-因为 `best_bid_ask` 只有价格、没有挂单量。逐字段说明见
+`best_bid`/`best_ask`。这样能删掉所有已被最优价越过的档位，但补不回被丢掉的帧里
+新增或改量的档位：在下一次快照前，某个价位可能缺失或挂单量是旧的，盘口顶部也一样，
+因为 `best_bid_ask` 只有价格、没有挂单量。要看最新的最优买卖价本身，直接读
+`best_bid_ask`。逐字段说明见
 [docs/schemas](https://outcometick.com/zh/docs/schemas)。
 
 ### Settlement source change on 2026-08-07 / 结算源切换（2026-08-07）
