@@ -301,6 +301,7 @@ data](https://outcometick.com/compare).
 
 Questions, or something not working:
 **[Telegram group](https://t.me/+TcK_hJOzOz5mZTk1)** ·
+**[Discord](https://discord.gg/ZDMqkptwm5)** (English and 中文) ·
 **support@outcometick.com**
 
 **[outcometick.com](https://outcometick.com)** —— 按订阅或按日期区间购买，用 API
@@ -308,4 +309,5 @@ key 自助取数。样例即取自同一份归档，购买后按你选择的币�
 在和其他来源比较？见[选数据时该比什么](https://outcometick.com/zh/compare)。
 
 有疑问或遇到问题：**[Telegram 群](https://t.me/+TcK_hJOzOz5mZTk1)** ·
+**[Discord 交流群](https://discord.gg/ZDMqkptwm5)**（中英文分区）·
 **support@outcometick.com**
