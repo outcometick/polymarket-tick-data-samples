@@ -33,7 +33,7 @@ engine — no key needed.
 | dataset | description |
 |---|---|
 | `prices` | The instantaneous Chainlink Data Streams feed, tick-by-tick (~1Hz per symbol), the relay's full-precision fixed-point value whenever the relay publishes it, three independent timestamps per tick. **Settled the markets through 2026-08-06**; still the underlying price line |
-| `twap` | The **Chainlink TWAP streams that settle the markets since 2026-08-07** — the 60s-lookback stream settles both 5-minute and 15-minute markets today; the 30s stream is still collected and shipped but no longer decides any outcome (~1Hz, same columns as `prices`) |
+| `twap` | The **Chainlink TWAP streams that settle the markets since 2026-08-07** — the 60s-lookback stream settles both 5-minute and 15-minute markets today; the 30s stream no longer decides any outcome and was collected and shipped through 2026-10-19 (~1Hz, same columns as `prices`) |
 | `book` | Full-depth CLOB order-book snapshots, up to 1/sec per token |
 | `price_change` | Order-book deltas with best bid/ask. Kept at most 1 per market per 500ms — **since 2026-08-25, per 20ms for BTC and 100ms for ETH**, and **since 2026-10-18, per 20ms for every asset** (up to a 25x increase in resolution) |
 | `best_bid_ask` | **Unthrottled top of book** — every top-of-book move the venue pushed, prices only (no sizes). The same quote `price_change` carries, at full resolution instead of the capture cadence. From 2026-09-02 |
@@ -90,8 +90,8 @@ given market is written on the market itself**, in
 inferring it from the date. It started as 30s for 5-minute markets and 60s for
 15-minute ones; upstream migrated the 5-minute markets to the 60s stream over
 2026-08-13/14, so **since 2026-08-15 every market settles on the 60s stream**.
-The 30s stream is still collected and still ships, but no longer decides any
-outcome. **To recompute outcomes, use the `twap` files for markets from
+The 30s stream no longer decides any outcome; it was collected and shipped
+through 2026-10-19 (UTC). **To recompute outcomes, use the `twap` files for markets from
 2026-08-07 onward and the `prices` files for earlier markets.**
 The TWAP streams cannot be reconstructed exactly from the ~1Hz instantaneous
 ticks — Chainlink computes them from its internal higher-frequency data — which
@@ -108,7 +108,7 @@ price lines themselves are described under
 自己身上**，即 `raw.cryptoMarketConfig.twapLookbackSeconds`——请逐个市场读该字段，
 不要按日期推断。最初 5 分钟市场用 30 秒回看、15 分钟用 60 秒；上游已在
 2026-08-13/14 把 5 分钟市场迁到 60 秒流，**2026-08-15 起所有市场都用 60 秒流结算**。
-30 秒流仍在采集、仍随数据集出货，但已不再决定任何输赢。**重算输赢：
+30 秒流已不再决定任何输赢，采集与出货至 2026-10-19（UTC）为止。**重算输赢：
 2026-08-07 起的市场用 `twap` 文件，此前的市场用 `prices` 文件。** TWAP 流无法从
 约 1Hz 的瞬时 tick 精确重建（Chainlink 用其内部更高频数据计算），因此数据集同时
 提供两条线。2026-08-07 当天早于我们的 TWAP 采集起点，该天以 `markets` 文件中的
@@ -155,7 +155,7 @@ ot run . --data ./polymarket-data-samples
 | file (inside the bundle) | rows | what |
 |---|---|---|
 | `data/chainlink-twap-60s/…/BTCUSD-twap60s-prices-2026-09-08.csv.gz` | 81,969 | **TWAP 60s stream — settles every market today** |
-| `data/chainlink-twap-30s/…/BTCUSD-twap30s-prices-2026-09-08.csv.gz` | 81,946 | TWAP 30s stream — still archived, no longer settles anything |
+| `data/chainlink-twap-30s/…/BTCUSD-twap30s-prices-2026-09-08.csv.gz` | 81,946 | TWAP 30s stream — archived through 2026-10-19, no longer settles anything |
 | `data/chainlink/…/BTCUSD-prices-2026-09-08.csv.gz` | 81,970 | instantaneous Chainlink feed |
 | `data/polymarket/…/book/BTC-5m/BTC-5m-book-2026-09-08.jsonl.gz` | 141,402 | order-book snapshots |
 | `data/polymarket/…/best_bid_ask/BTC-5m/BTC-5m-best_bid_ask-2026-09-08.jsonl.gz` | 1,314,078 | **unthrottled top of book** |

@@ -61,7 +61,7 @@ Settlement source change: markets from **2026-08-07 00:00 UTC** onward (those wi
 - from 2026-08-07: 5-minute markets settled on the 30s-lookback stream, 15-minute markets on the 60s stream
 - from 2026-08-13 upstream began migrating 5-minute markets to the 60s stream, completing on 2026-08-14; **since 2026-08-15 every market, 5-minute and 15-minute alike, settles on the 60s stream**
 
-The `twap30s` stream is still collected and still ships with every day of the dataset, but it no longer decides any market's outcome. The full dataset ships both as `twap30s`/`twap60s` price files (same columns as `prices`, coverage from 2026-08-08) — recompute post-switch markets from the stream the market's own config names, not from the instantaneous `prices` files.
+The `twap30s` stream no longer decides any market's outcome; it was collected and shipped through 2026-10-19 (UTC) and stopped from 2026-10-20, since the current upstream feed does not carry it. The full dataset ships both as `twap30s`/`twap60s` price files (same columns as `prices`; `twap30s` covers 2026-08-08 to 2026-10-19, `twap60s` from 2026-08-08 on) — recompute post-switch markets from the stream the market's own config names, not from the instantaneous `prices` files.
 
 ## <SERIES>-book-<date>.jsonl.gz — full-depth order book snapshots
 
