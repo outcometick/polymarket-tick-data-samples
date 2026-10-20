@@ -116,8 +116,8 @@ every entry, but it is throttled, so a top of book rebuilt from deltas alone
 skips moves. Counting a "move" as a change in the (best bid, best ask) pair for
 one token, the same way on both files, the sample day holds **454,790** moves in
 this file and only **288,298 — 63.4%** are recoverable from the deltas. BTC is
-the best case (deltas kept at 1/20ms for BTC, 1/100ms for ETH, 1/500ms for
-everything else); on other assets far less survives.
+the best case (on the sample day deltas were kept at 1/20ms for BTC, 1/100ms for
+ETH, 1/500ms for everything else); on other assets far less survives.
 
 Availability: from 2026-09-02 (collection started 00:42:18 UTC that day, so it
 is missing its first 42 minutes); the first complete UTC day is 2026-09-03.
@@ -139,8 +139,9 @@ Throttling (disclosed): frames are kept at most 1 per market per N ms (keep-firs
 
 - from 2026-06-06: all assets 500ms
 - from 2026-08-25: BTC 20ms, ETH 100ms; all others 500ms
+- from 2026-10-18: all assets 20ms
 
-So a BTC day from 2026-08-25 onward carries roughly 25x the deltas of an earlier one. If you reconstruct books across a date range that spans the change, expect the resolution to change with it.
+So a BTC day from 2026-08-25 onward carries roughly 25x the deltas of an earlier one, and from 2026-10-18 every other asset is captured at the same 20ms. If you reconstruct books across a date range that spans the change, expect the resolution to change with it.
 
 ## <SERIES>-last_trade_price-<date>.jsonl.gz — trade prints
 

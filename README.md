@@ -35,7 +35,7 @@ engine — no key needed.
 | `prices` | The instantaneous Chainlink Data Streams feed, tick-by-tick (~1Hz per symbol), the relay's full-precision fixed-point value whenever the relay publishes it, three independent timestamps per tick. **Settled the markets through 2026-08-06**; still the underlying price line |
 | `twap` | The **Chainlink TWAP streams that settle the markets since 2026-08-07** — the 60s-lookback stream settles both 5-minute and 15-minute markets today; the 30s stream is still collected and shipped but no longer decides any outcome (~1Hz, same columns as `prices`) |
 | `book` | Full-depth CLOB order-book snapshots, up to 1/sec per token |
-| `price_change` | Order-book deltas with best bid/ask. Kept at most 1 per market per 500ms — and **since 2026-08-25, per 20ms for BTC and 100ms for ETH**, roughly a 25x increase in resolution |
+| `price_change` | Order-book deltas with best bid/ask. Kept at most 1 per market per 500ms — **since 2026-08-25, per 20ms for BTC and 100ms for ETH**, and **since 2026-10-18, per 20ms for every asset** (up to a 25x increase in resolution) |
 | `best_bid_ask` | **Unthrottled top of book** — every top-of-book move the venue pushed, prices only (no sizes). The same quote `price_change` carries, at full resolution instead of the capture cadence. From 2026-09-02 |
 | `last_trade_price` | Trade prints as the venue's WebSocket broadcast them — stored unthrottled, never sampled; not reconciled against on-chain fills |
 | `markets` | Per-market metadata with **settlement outcome** (who won) and **strike** (the official priceToBeat) |
@@ -166,7 +166,7 @@ ot run . --data ./polymarket-data-samples
 **What the unthrottled stream is worth, measured on this day.** A "move" is a
 change in the pair (best bid, best ask) for one token, counted the same way on
 both files. `best_bid_ask` records **454,790** of them. The throttled deltas
-recover **288,298 — 63.4%**. And BTC is the *best* case: deltas are kept at one
+recover **288,298 — 63.4%**. And BTC is the *best* case: on this day deltas were kept at one
 per 20ms for BTC, 100ms for ETH and 500ms for everything else, so on other
 assets far less of the top of book survives. That is the entire reason this
 stream exists.
@@ -174,7 +174,7 @@ stream exists.
 **未限流的那条流值多少钱，用本样例日实测。**「一次变动」＝某个 token 的
 (最优买价, 最优卖价) 发生变化，两个文件用同一口径计数。`best_bid_ask` 记录了
 **454,790 次**；限流的增量流只能还原 **288,298 次，即 63.4%**。而 BTC 已经是
-**最好的情况**——增量流对 BTC 每 20ms 保留一条、ETH 100ms、其余币种 500ms，
+**最好的情况**——样例日当天增量流对 BTC 每 20ms 保留一条、ETH 100ms、其余币种 500ms，
 其它币种能留下的顶部变动远少于此。这就是这条流存在的全部理由。
 
 Each file is also attached to the Release individually, for anyone who only
