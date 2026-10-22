@@ -155,7 +155,6 @@ ot run . --data ./polymarket-data-samples
 | file (inside the bundle) | rows | what |
 |---|---|---|
 | `data/chainlink-twap-60s/…/BTCUSD-twap60s-prices-2026-10-18.csv.gz` | 85,339 | **TWAP 60s stream — settles every market today** |
-| `data/chainlink-twap-30s/…/BTCUSD-twap30s-prices-2026-10-18.csv.gz` | 84,644 | TWAP 30s stream — archived through 2026-10-19, no longer settles anything |
 | `data/chainlink/…/BTCUSD-prices-2026-10-18.csv.gz` | 85,339 | instantaneous Chainlink feed |
 | `data/polymarket/…/book/BTC-5m/BTC-5m-book-2026-10-18.jsonl.gz` | 132,930 | order-book snapshots |
 | `data/polymarket/…/best_bid_ask/BTC-5m/BTC-5m-best_bid_ask-2026-10-18.jsonl.gz` | 1,140,802 | **unthrottled top of book** |
@@ -201,7 +200,6 @@ timestamp the upstream itself put on the message.
 | CLOB order book (`recv_ms − event_ts_ms`) | **9 ms** | 41 ms |
 | Top of book, unthrottled (`recv_ms − payload.timestamp`) | **8 ms** | 51 ms |
 | Chainlink TWAP 60s stream (`recv_ms − server_ts_ms`) | **246 ms** | 398 ms |
-| Chainlink TWAP 30s stream (`recv_ms − server_ts_ms`) | **226 ms** | 341 ms |
 | Chainlink instantaneous feed (`recv_ms − server_ts_ms`) | **271 ms** | 406 ms |
 
 Collection runs next to the venues' own infrastructure (`eu-west-1`). Every

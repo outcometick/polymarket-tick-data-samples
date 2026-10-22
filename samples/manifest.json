@@ -5,8 +5,8 @@
   "bundle": {
     "name": "polymarket-data-samples.tar.gz",
     "topLevelDir": "polymarket-data-samples",
-    "bytes": 341685659,
-    "sha256": "45495da5e76dc59f58fa00cf4fca1a728624fc199d0852d7759a809f29317927",
+    "bytes": 339802110,
+    "sha256": "e660f303a6b35d5b58f04b395ba11901996c60bb8730780fb8cbf52824570f70",
     "url": "https://github.com/outcometick/polymarket-tick-data-samples/releases/latest/download/polymarket-data-samples.tar.gz"
   },
   "files": [
@@ -16,13 +16,6 @@
       "rows": 85339,
       "bytes": 1853581,
       "sha256": "d41894e9a893c51d0d0a0a6e6114909a4e2d17e646bb2fc8727565773a6e0e78"
-    },
-    {
-      "path": "data/chainlink-twap-30s/daily/prices/BTCUSD/BTCUSD-twap30s-prices-2026-10-18.csv.gz",
-      "name": "BTCUSD-twap30s-prices-2026-10-18.csv.gz",
-      "rows": 84644,
-      "bytes": 1886504,
-      "sha256": "4607905dd6011adb22f6fb562086277c27f71a96a0258b1cf58ba18988fe32b4"
     },
     {
       "path": "data/chainlink-twap-60s/daily/prices/BTCUSD/BTCUSD-twap60s-prices-2026-10-18.csv.gz",
