@@ -16,7 +16,6 @@ polymarket-data-samples/
   data/polymarket/daily/price_change/BTC-5m/BTC-5m-price_change-<date>.jsonl.gz
   data/polymarket/daily/last_trade_price/BTC-5m/BTC-5m-last_trade_price-<date>.jsonl.gz
   data/chainlink/daily/prices/BTCUSD/BTCUSD-prices-<date>.csv.gz
-  data/chainlink-twap-30s/daily/prices/BTCUSD/BTCUSD-twap30s-prices-<date>.csv.gz
   data/chainlink-twap-60s/daily/prices/BTCUSD/BTCUSD-twap60s-prices-<date>.csv.gz
 ```
 
